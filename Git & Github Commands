@@ -1,0 +1,291 @@
+Here’s a comprehensive list of **Git** and **GitHub** related commands commonly used by developers, DevOps engineers, and contributors. Each command is accompanied by its typical use case.
+
+---
+
+## **Git Commands and Uses**
+
+### **Configuration**
+```bash
+git config --global user.name "Your Name"          # Set user name
+git config --global user.email "your@email.com"    # Set user email
+git config --list                                  # List all configurations
+```
+
+### **Repository Management**
+```bash
+git init                                           # Initialize a new repository
+git clone <url>                                    # Clone a remote repository
+git remote add origin <url>                        # Add remote repository
+git remote -v                                      # List remote repositories
+```
+
+### **Staging and Committing**
+```bash
+git status                                         # Check repository status
+git add <file>                                     # Stage specific file(s)
+git add .                                          # Stage all changes
+git commit -m "Commit message"                     # Commit staged changes
+git commit -am "Commit message"                    # Stage and commit tracked files
+```
+
+### **Branching**
+```bash
+git branch                                         # List all branches
+git branch <branch>                                # Create new branch
+git checkout <branch>                              # Switch to branch
+git checkout -b <branch>                           # Create and switch to new branch
+git merge <branch>                                 # Merge branch into current branch
+git branch -d <branch>                             # Delete branch (locally)
+```
+
+### **Pushing and Pulling**
+```bash
+git push                                           # Push changes to remote
+git push origin <branch>                           # Push branch to remote
+git pull                                           # Fetch and merge changes from remote
+git fetch                                          # Fetch changes from remote (no merge)
+```
+
+### **Viewing History**
+```bash
+git log                                            # Show commit history
+git log --oneline                                  # Condensed commit history
+git diff                                           # Show changes not staged
+git diff --staged                                  # Show staged changes
+```
+
+### **Undo and Reset**
+```bash
+git checkout -- <file>                             # Discard changes to file
+git reset HEAD <file>                              # Unstage file
+git revert <commit>                                # Revert specific commit
+git reset --hard <commit>                          # Reset to specific commit, discard changes
+```
+
+### **Tagging**
+```bash
+git tag                                            # List tags
+git tag <tag>                                      # Create tag
+git push origin <tag>                              # Push tag to remote
+```
+
+### **Stash**
+```bash
+git stash                                          # Stash changes
+git stash list                                     # List stashes
+git stash apply                                    # Apply stash
+git stash drop                                     # Delete stash
+```
+
+---
+
+## **GitHub CLI Commands and Uses (`gh`)**
+
+Install GitHub CLI:  
+```bash
+brew install gh      # On macOS
+sudo apt install gh  # On Ubuntu/Debian
+```
+
+### **Authentication**
+```bash
+gh auth login                                        # Login to GitHub
+gh auth logout                                       # Logout
+```
+
+### **Repository Operations**
+```bash
+gh repo clone <owner>/<repo>                         # Clone a GitHub repo
+gh repo create <repo>                                # Create a new repo
+gh repo fork <owner>/<repo>                          # Fork a repo
+gh repo view                                         # View repo info
+```
+
+### **Issues**
+```bash
+gh issue list                                        # List issues
+gh issue create                                      # Create issue
+gh issue view <number>                               # View issue details
+gh issue comment <number> --body "Comment"           # Comment on issue
+```
+
+### **Pull Requests**
+```bash
+gh pr list                                           # List pull requests
+gh pr create                                         # Create pull request
+gh pr view <number>                                  # View pull request
+gh pr checkout <number>                              # Checkout PR branch
+gh pr merge <number>                                 # Merge pull request
+```
+
+### **Other Useful GitHub CLI Commands**
+```bash
+gh repo view --web                                   # Open repo in browser
+gh issue view --web <number>                         # Open issue in browser
+gh pr view --web <number>                            # Open pull request in browser
+gh api <endpoint>                                    # Make GitHub API call
+```
+
+---
+
+## **Summary Table**
+
+| Command                         | Use Case                        |
+|----------------------------------|---------------------------------|
+| git init                        | Start a new repo                |
+| git clone                       | Copy remote repo                |
+| git add, git commit             | Stage & save changes            |
+| git status, git log             | Check state & history           |
+| git branch, git checkout        | Branch management               |
+| git pull, git push              | Sync changes with remote        |
+| git merge, git rebase           | Integrate changes               |
+| git stash                       | Temporarily save changes        |
+| gh auth login                   | Authenticate GitHub CLI         |
+| gh repo create/view/fork        | Repo operations                 |
+| gh issue/pr list/create         | Issue/PR management             |
+
+---
+
+Here’s a list of **advanced Git and GitHub commands** with practical examples for a typical workflow, such as **feature development, code review, and release management**. These commands go beyond the basics and are often used by experienced developers and DevOps engineers.
+
+---
+
+## **Advanced Git Commands & Workflow Examples**
+
+### **1. Rebasing for a Clean History**
+```bash
+# Update your feature branch with the latest main branch changes
+git checkout feature-branch
+git fetch origin
+git rebase origin/main
+
+# Resolve any conflicts, then continue
+git add <resolved-files>
+git rebase --continue
+```
+
+### **2. Cherry-Picking Specific Commits**
+```bash
+# Apply a specific commit from another branch
+git checkout main
+git cherry-pick <commit-hash>
+```
+
+### **3. Interactive Rebase (Rewriting History)**
+```bash
+# Edit, squash, or reorder commits before pushing
+git checkout feature-branch
+git rebase -i HEAD~5     # Edit the last 5 commits
+
+# In the interactive editor:
+# - pick: keep the commit
+# - squash: combine with previous commit
+# - edit: modify commit message or content
+```
+
+### **4. Stashing with Context**
+```bash
+git stash save "work in progress: login refactor"     # Save changes with a message
+git stash list                                        # View stashed changes
+git stash pop                                         # Apply and remove latest stash
+git stash apply stash@{2}                             # Apply specific stash
+```
+
+### **5. Amending the Last Commit**
+```bash
+git add <file>
+git commit --amend -m "Updated commit message and included new changes"
+```
+
+### **6. Tagging Releases**
+```bash
+git tag -a v1.0.0 -m "Release version 1.0.0"
+git push origin v1.0.0
+```
+
+### **7. Submodules (Managing Dependencies)**
+```bash
+git submodule add https://github.com/other/repo.git path/to/submodule
+git submodule update --init --recursive
+```
+
+### **8. Bisecting to Find Bugs**
+```bash
+git bisect start
+git bisect bad                        # Mark current commit as bad
+git bisect good <commit-hash>         # Mark known good commit
+# Git will automatically checkout commits between to find culprit
+git bisect reset                      # End bisect session
+```
+
+### **9. Clean Up Remote Branches**
+```bash
+git fetch --prune                     # Remove references to deleted remote branches
+
+# Delete remote branch
+git push origin --delete <branch>
+```
+
+### **10. Squash Commits Before Merge**
+```bash
+git checkout feature-branch
+git rebase -i origin/main             # Squash multiple commits into one before merging
+```
+
+---
+
+## **Advanced GitHub CLI Workflow Examples**
+
+### **1. Create a Pull Request from the CLI**
+```bash
+gh pr create --base main --head feature-branch --title "Add login feature" --body "Implements login using OAuth2"
+```
+
+### **2. Review and Merge PRs**
+```bash
+gh pr checkout 42                   # Checkout PR #42 locally
+gh pr review 42 --approve           # Approve the PR
+gh pr merge 42 --squash             # Merge with squash
+```
+
+### **3. Link Issues to PRs**
+```bash
+gh pr create --title "Fixes #123: Refactor API" --body "This PR fixes bug #123"
+```
+
+### **4. Manage Releases**
+```bash
+gh release create v1.0.0 --title "v1.0.0" --notes "Initial release"
+gh release view v1.0.0
+```
+
+---
+
+## **Full Example Workflow: Feature Development to Release**
+
+1. **Start Feature**  
+   `git checkout -b feature/login`
+2. **Develop & Commit**  
+   `git add .`  
+   `git commit -m "feat: initial login implementation"`
+3. **Update with Main Using Rebase**  
+   `git fetch origin`  
+   `git rebase origin/main`
+4. **Squash Commits Before PR**  
+   `git rebase -i origin/main`
+5. **Push Feature Branch**  
+   `git push origin feature/login`
+6. **Create PR from CLI**  
+   `gh pr create --base main --head feature/login --title "Login Feature" --body "Implements login, closes #42"`
+7. **Review, Approve, and Merge**  
+   `gh pr review <pr-number> --approve`  
+   `gh pr merge <pr-number> --squash`
+8. **Tag Release**  
+   `git tag -a v1.0.0 -m "Login feature release"`  
+   `git push origin v1.0.0`
+9. **Publish Release on GitHub**  
+   `gh release create v1.0.0 --title "v1.0.0" --notes "Includes login feature"`
+
+---
+
+If you want a real-world, step-by-step workflow for a specific scenario (bug fix, hotfix, release, multi-repo management, etc.), let me know!
